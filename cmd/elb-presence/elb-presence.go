@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"github.com/civisanalytics/elb-presence/presence"
+	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -23,14 +24,12 @@ func main() {
 	}
 
 	if ELBName == "" {
-		fmt.Printf("Environment Variable ELB_NAME must be set. Exiting.\n")
-		os.Exit(1)
+		log.Fatalln("Environment Variable ELB_NAME must be set")
 	}
 
 	err := presence.JoinELB(ELBName)
 	if err != nil {
-		fmt.Printf("Unable to join Load-Balancer Pool[%s]\n", ELBName)
-		os.Exit(1)
+		log.Fatalf("Unable to join Load-Balancer Pool[%s]\n", ELBName)
 	}
 
 	// Listen for system signals and adjust membership accordingly.
@@ -42,10 +41,8 @@ func main() {
 		case syscall.SIGINT, syscall.SIGTERM, os.Kill:
 			err := presence.LeaveELB(ELBName)
 			if err != nil {
-				fmt.Printf("Unable to leave Load-Balancer Pool[%s]\n", ELBName)
-				os.Exit(1)
+				log.Fatalf("Unable to leave Load-Balancer Pool[%s]\n", ELBName)
 			}
-
 			os.Exit(0)
 		}
 	}
