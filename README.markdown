@@ -1,3 +1,7 @@
+# Maintenance
+
+:heavy_exclamation_mark: This project is released as-is, and is not actively maintained by Civis Analytics.
+
 # ELB Presence
 
 A lightweight utility for Elastic Load-Balancer membership. It is most useful for pairing with a Docker container to announce the inclusion of the host instance within the specified Elastic Load-Balancer.
